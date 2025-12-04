@@ -1,0 +1,47 @@
+/* admin_monitoreo.css */
+
+/* Ajuste para que Tailwind (si se carga via CDN) no interfiera con tu CSS global */
+.tailwind-scope {
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    width: 100%; /* Asegura ancho completo */
+}
+
+/* Ocultar barra scroll en listas pequeñas */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Animaciones suaves */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Estilos específicos para la barra de progreso personalizada */
+.progress-bar-container {
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+    height: 12px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #2563eb; /* Azul Tailwind */
+    transition: width 0.5s ease-out;
+}
+
+/* Ajustes para que ocupe todo el ancho disponible */
+.full-width-panel {
+    width: 100%;
+    max-width: 100%;
+}

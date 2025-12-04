@@ -1,0 +1,179 @@
+/* Fondo general con imagen */
+body {
+    background: url('https://www.sitandplas.com/wp-content/uploads/2022/03/Barkibu_sitandplas.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Capa semitransparente sobre el fondo */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Contenedor centrado */
+.container-register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+}
+
+/* Caja del registro */
+.register-box {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px 50px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 370px;
+    text-align: center;
+}
+
+/* Logo */
+.logo-container {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #00c4cc;
+}
+
+.logo-container h1 {
+    font-size: 20px;
+    color: #008f8c;
+    margin-top: 10px;
+}
+
+/* Íconos sociales */
+.social-login {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.social-login a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    font-size: 22px;
+    color: white;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.facebook { background-color: #3b5998; }
+.instagram { background-color: #E1306C; }
+.tiktok { background-color: #000000; }
+
+.social-login a:hover {
+    transform: translateY(-3px);
+    opacity: 0.9;
+}
+
+/* Título */
+h2 {
+    color: #008f8c;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+/* Campos de texto */
+.input-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-container .icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #00c4cc;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 10px 10px 10px 35px;
+    border-radius: 8px;
+    border: 1px solid #00c4cc;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-container input:focus {
+    border-color: #00b894;
+    box-shadow: 0 0 5px #00b894;
+}
+
+/* Botón de registro */
+.btn-register {
+    width: 100%;
+    background: linear-gradient(135deg, #00c4cc, #00e676);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: bold;
+}
+
+.btn-register:hover {
+    background: linear-gradient(135deg, #00e676, #00c4cc);
+    transform: scale(1.03);
+}
+
+/* Enlace inferior */
+p a {
+    color: #00bfa5;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+/* Estilo del título principal */
+h2 {
+    color: #00bfa5 !important;
+    font-weight: bold;
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 2px rgba(0, 150, 136, 0.2);
+}
+
+/* Mensaje de alerta (éxito o error) */
+.alerta {
+    background-color: rgba(0, 230, 118, 0.1);
+    border: 1px solid #00e676;
+    color: #00b894;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.alerta.error {
+    background-color: rgba(255, 0, 0, 0.1);
+    border: 1px solid #ff5252;
+    color: #d32f2f;
+}

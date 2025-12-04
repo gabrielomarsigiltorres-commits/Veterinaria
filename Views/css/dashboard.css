@@ -1,0 +1,219 @@
+/* Estilos del dashboard (uso de clases en español) */
+:root{
+    --bg:#f3f7f7;
+    --card:#ffffff;
+    --muted:#8a9aa1;
+    --primary:#18a0d6;
+    --accent:#f6c26b;
+    --danger:#ff7b7b;
+    --soft:#eef6f8;
+    --radius:12px;
+    --shadow: 0 6px 18px rgba(32,41,46,0.06);
+}
+
+/* Reset básico */
+*{box-sizing:border-box}
+html,body{height:100%;}
+body{
+    margin:0;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background:var(--bg);
+    color:#21303a;
+    -webkit-font-smoothing:antialiased;
+}
+
+/* ------------------ Encabezado ------------------ */
+.encabezado{
+    background:linear-gradient(90deg,#ffffff, #fbfdff);
+    border-bottom:1px solid #e7eef0;
+    padding:18px 0;
+}
+.contenedor-encabezado{
+    max-width:1150px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding:0 18px;
+}
+.logo{
+    width:50px;
+    height:auto;
+    border-radius:8px;
+}
+.contenedor-encabezado h1{
+    font-size:18px;
+    margin:0;
+    color:#1b2b2f;
+    font-weight:600;
+}
+.perfil-usuario a{
+    list-style:none;
+    background: #f44336;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration:none;
+}
+.nav-principal{margin-left:24px;flex:1}
+.nav-principal ul{display:flex;gap:18px;list-style:none;padding:0;margin:0}
+.nav-principal a{color:var(--muted);text-decoration:none;font-weight:500}
+.perfil-usuario img{width:42px;height:42px;border-radius:50%;display:block}
+
+/* ------------------ Layout principal ------------------ */
+.principal{max-width:1150px;margin:28px auto;padding:0 18px;display:grid;grid-template-columns:1fr 340px;grid-template-areas:
+  "bienvenida bienvenida"
+  "companeros citas"
+  "accesos recordatorios";
+  gap:22px;align-items:start}
+
+/* ------------------ Bienvenida (saludo) ------------------ */
+.seccion-bienvenida{grid-area:bienvenida;background:transparent}
+.seccion-bienvenida h1{
+    margin:0 0 8px 0;
+    font-size:28px;
+    background:linear-gradient(90deg,#f8fbfc,#ffffff);
+    padding:18px 20px;border-radius:10px;box-shadow:var(--shadow)
+}
+
+/*---Imagen Compañero--*/
+.imagen-companero{
+    width:100%;
+    height:160px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+/* ------------------ Compañeros (mascotas) ------------------ */
+.seccion-companeros{grid-area:companeros}
+.seccion-companeros h3{margin:0 0 14px 6px;color:#355058}
+.contenedor-companeros{display:flex;gap:18px;align-items:flex-start}
+.tarjeta-companero, .anadir-companero{
+    background:var(--card);
+    border-radius:12px;
+    padding:12px;
+    width:220px;
+    box-shadow:var(--shadow);
+    display:flex;flex-direction:column;align-items:flex-start;gap:8px;
+}
+.tarjeta-companero img{width:100%;height:160px;object-fit:cover;border-radius:8px}
+.tarjeta-companero h4{margin:6px 0 0 0;font-size:16px}
+.tarjeta-companero p{margin:0;color:var(--muted);font-size:13px}
+.tarjeta-companero button{margin-top:8px;background:#f3f7f8;border:none;padding:8px 12px;border-radius:8px;color:#3b6970;cursor:pointer}
+.anadir-companero{display:flex;justify-content:center;align-items:center;border:2px dashed #d8e6ea;background:transparent}
+.anadir-companero button{background:transparent;border:none;color:var(--primary);font-weight:600;font-size:15px;cursor:pointer}
+
+/* ------------------ Citas ------------------ */
+.seccion-citas{grid-area:citas}
+.seccion-citas h3{margin:0 0 14px 0}
+.contenedor-citas{display:flex;flex-direction:column;gap:14px}
+.tarjeta-cita{
+    background:var(--card);
+    border-radius:12px;padding:14px;box-shadow:var(--shadow);
+}
+.tarjeta-cita p{margin:6px 0;color:#334b51}
+.tarjeta-cita button{margin-top:8px;padding:6px 10px;border-radius:8px;border:none;cursor:pointer}
+.tarjeta-cita button:first-of-type{background:#e7fbff;color:var(--primary);margin-right:8px}
+.tarjeta-cita button:last-of-type{background:#ffdfe0;color:var(--danger)}
+
+/* ------------------ Recordatorios ------------------ */
+.seccion-recordatorios{grid-area:recordatorios}
+.contenedor-recordatorios{display:flex;flex-direction:column;gap:12px}
+.tarjeta-recordatorio{background:var(--card);padding:14px;border-radius:12px;box-shadow:var(--shadow)}
+.tarjeta-recordatorio p{margin:0 0 8px 0}
+.tarjeta-recordatorio button{background:transparent;border:none;color:var(--primary);cursor:pointer}
+
+/* ------------------ Accesos Rápidos ------------------ */
+.seccion-accesos{grid-area:accesos}
+.contenedor-accesos{display:flex;flex-wrap:wrap;gap:12px}
+
+/* Accesos rápidos: ahora con SVG inline en HTML */
+.contenedor-accesos .accesos-rapidos{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    flex:1 1 220px;
+    min-width:160px;
+    background:var(--card);
+    color:var(--texto);
+    text-decoration:none;
+    padding:12px 16px;
+    border-radius:12px;
+    box-shadow:var(--shadow);
+    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+
+.accesos-rapidos .icono-acceso{display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px;width:44px;height:44px;border-radius:8px;background:#e9f6fb}
+.accesos-rapidos .icono-acceso svg{width:20px;height:20px;color:var(--primario)}
+
+.accesos-rapidos .texto-acceso{font-weight:600;font-size:14px}
+
+.contenedor-accesos .accesos-rapidos:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(32,41,46,0.08)}
+
+/* Primera tarjeta destacada */
+.contenedor-accesos .accesos-rapidos:first-child{background:linear-gradient(90deg,var(--primary),#3fb0d9);color:white}
+.contenedor-accesos .accesos-rapidos:first-child .icono-acceso{background:rgba(255,255,255,0.12)}
+.contenedor-accesos .accesos-rapidos:first-child .icono-acceso svg{color:white}
+
+/* ----- Inyectar SVGs en ::before como data URIs ----- */
+.contenedor-accesos .accesos-rapidos::before{
+    content: "";
+    display:inline-block;
+    width:44px;
+    height:44px;
+    border-radius:8px;
+    background-color:#e9f6fb;
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:20px 20px;
+    flex:0 0 44px;
+    margin-right:12px;
+}
+
+/* calendario */
+.contenedor-accesos .accesos-rapidos:nth-child(1)::before{
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%2318a0d6' d='M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM5 8h14v10H5V8z'/></svg>");
+}
+
+/* historial/reloj */
+.contenedor-accesos .accesos-rapidos:nth-child(2)::before{
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%2318a0d6' d='M12 4a8 8 0 1 0 8 8 8 8 0 0 0-8-8zm1 9h-1V7h-2v6h3z'/></svg>");
+}
+
+/* carrito/tienda */
+.contenedor-accesos .accesos-rapidos:nth-child(3)::before{
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%2318a0d6' d='M7 4V2H5v2H2v2h1l1.6 9.59A2 2 0 0 0 6.58 18h10.84a2 2 0 0 0 1.98-1.41L20 6h1V4zM9 20a2 2 0 1 0 2-2 2 2 0 0 0-2 2zm6 0a2 2 0 1 0 2-2 2 2 0 0 0-2 2z'/></svg>");
+}
+
+/* telefono/contacto */
+.contenedor-accesos .accesos-rapidos:nth-child(4)::before{
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%2318a0d6' d='M6.62 10.79a15.091 15.091 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24 11.72 11.72 0 0 0 3.7.59 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h2.5a1 1 0 0 1 1 1 11.72 11.72 0 0 0 .59 3.7 1 1 0 0 1-.24 1.02l-2.23 2.07z'/></svg>");
+}
+
+/* cuando la tarjeta está destacada (primera), usar svg blanco sobre fondo semitransparente */
+.contenedor-accesos .accesos-rapidos:first-child::before{
+    background-color:rgba(255,255,255,0.12);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23ffffff' d='M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM5 8h14v10H5V8z'/></svg>");
+}
+/* ------------------ Pie de página ------------------ */
+.pie-pagina{margin-top:28px;padding:18px 0;background:transparent;border-top:1px solid #e7eef0}
+.contenedor-pie{max-width:1150px;margin:0 auto;padding:0 18px;display:flex;justify-content:space-between;align-items:center}
+.contenedor-pie p{margin:0;color:var(--muted)}
+.contenedor-pie nav ul{display:flex;gap:12px;list-style:none;margin:0;padding:0}
+.contenedor-pie nav a{color:var(--muted);text-decoration:none}
+
+/* Responsive */
+@media(max-width:980px){
+    .principal{grid-template-columns:1fr;grid-template-areas:
+      "bienvenida"
+      "companeros"
+      "accesos"
+      "citas"
+      "recordatorios"}
+    .contenedor-companeros{flex-wrap:wrap}
+}
+
+@media(max-width:480px){
+    .tarjeta-companero, .anadir-companero{width:100%}
+    .seccion-bienvenida h2{font-size:20px;padding:14px}
+}

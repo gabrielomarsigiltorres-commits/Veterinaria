@@ -1,0 +1,201 @@
+/* Hoja de estilos para Views/tienda.php */
+:root{
+  --fondo:#f3f7f7;
+  --card:#ffffff;
+  --texto:#21303a;
+  --muted:#7f8c8d;
+  --primario:#18a0d6;
+  --primario-oscuro:#1492bf;
+  --danger:#ff7b7b;
+  --radio:12px;
+  --sombra:0 8px 20px rgba(32,41,46,0.06);
+  --contenedor-max:1150px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--fondo);
+  color:var(--texto);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+  -webkit-font-smoothing:antialiased;
+}
+.contenedor-principal{max-width:var(--contenedor-max);margin:0 auto}
+.contenedor-limitado{max-width:var(--contenedor-max);margin:0 auto;padding:0 18px}
+.cabecera-sitio{background:linear-gradient(90deg,#fff,#fbfdff);border-bottom:1px solid #e7eef0}
+.cabecera-contenido{display:flex;align-items:center;gap:18px;padding:16px 0}
+.logo-contenedor{display:flex;align-items:center;gap:12px}
+.logo-texto{font-size:16px;margin:0;color:#1c2a2f;font-weight:600}
+.navegacion-principal{margin-left:24px;flex:1}
+.navegacion-principal a{color:var(--muted);text-decoration:none;margin-right:18px;font-weight:500}
+.usuario-acciones{display:flex;align-items:center;gap:12px}
+.perfil-usuario .avatar-usuario{width:40px;height:40px;border-radius:50%;object-fit:cover}
+.introduccion-tienda{padding:18px 0}
+.introduccion-tienda h1{margin:0 0 8px;font-size:24px}
+.introduccion-tienda p{margin:0;color:var(--muted)}
+.layout-tienda{display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:start;padding:18px 0}
+.barra-lateral-filtros .filtros-contenido{background:var(--card);padding:16px;border-radius:12px;box-shadow:var(--sombra)}
+.barra-lateral-filtros h2{margin:0 0 12px;font-size:16px}
+.espacio-filtros label{display:block;margin-bottom:6px;color:var(--muted)}
+.espacio-filtros input[type="text"]{width:100%;padding:10px;border-radius:8px;border:1px solid #e2eef0;background:#fbfefe}
+.espacio-filtros input[type="checkbox"]{margin-right:8px}
+.seccion-productos{background:transparent}
+.seccion-productos h2{margin:0 0 12px}
+.cuadricula-productos{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.producto-tarjeta{background:var(--card);border-radius:12px;padding:12px;box-shadow:var(--sombra);display:flex;flex-direction:column;gap:10px}
+.imagen-producto{width:100%;height:180px;object-fit:cover;border-radius:8px}
+.detalle-producto p{margin:0;color:var(--muted);font-size:14px}
+.detalle-producto p:first-child{color:var(--texto);font-weight:600}
+.detalle-producto p:nth-child(3){color:#0b84a5;font-weight:700;margin-top:6px}
+.boton-anadir-carrito{margin-top:auto;background:linear-gradient(90deg,var(--primario),var(--primario-oscuro));color:white;border:none;padding:10px;border-radius:10px;cursor:pointer;font-weight:600;display:flex;align-items:center;justify-content:center}
+.boton-anadir-carrito:hover{filter:brightness(0.95)}
+.pie-de-pagina{padding:18px 0;border-top:1px solid #e7eef0}
+.footer-contenido{display:flex;justify-content:space-between;align-items:center;padding:0 18px}
+.footer-contenido p{margin:0;color:var(--muted);font-size:14px}
+.footer-contenido a{color:var(--muted);text-decoration:none;margin-left:12px}
+@media(max-width:980px){
+  .layout-tienda{grid-template-columns:1fr;}
+  .cuadricula-productos{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:580px){
+  .cuadricula-productos{grid-template-columns:1fr}
+  .imagen-producto{height:220px}
+  .logo-texto{font-size:14px}
+  .navegacion-principal{display:none}
+}
+
+/* === MODAL EMERGENTE === */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s ease;
+  z-index:1000;
+}
+.modal.mostrar{opacity:1;pointer-events:auto;}
+.modal-contenido{
+  background:white;
+  padding:24px 30px;
+  border-radius:var(--radio);
+  box-shadow:var(--sombra);
+  text-align:center;
+  animation:aparecer .25s ease;
+}
+.modal-contenido p{margin:0 0 12px;color:var(--texto);font-weight:500}
+.modal-contenido button{
+  background:var(--primario);
+  color:white;
+  border:none;
+  padding:8px 20px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+.modal-contenido button:hover{background:var(--primario-oscuro);}
+@keyframes aparecer{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* === MODAL DETALLE DE PRODUCTO === */
+.modal-detalle {
+  background: white;
+  padding: 24px 28px;
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  max-width: 420px;
+  width: 90%;
+  position: relative;
+  text-align: center;
+  animation: aparecer .25s ease;
+}
+.modal-detalle img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+.modal-detalle h3 {
+  margin: 8px 0 4px;
+  color: var(--texto);
+}
+.modal-detalle p {
+  color: var(--muted);
+  margin: 4px 0;
+}
+.cantidad-control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+.cantidad-control input {
+  width: 70px;
+  padding: 6px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+.precio-total {
+  color: var(--texto);
+  font-size: 16px;
+  font-weight: 600;
+}
+.acciones-modal {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+.acciones-modal button {
+  flex: 1;
+  margin: 0 5px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+#cancelarCompra {
+  background: #ccc;
+  color: #333;
+}
+#confirmarCompra {
+  background: var(--primario);
+  color: white;
+}
+#confirmarCompra:hover {
+  background: var(--primario-oscuro);
+}
+.cerrar-modal {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--muted);
+}
+.metodo-pago {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.metodo-pago label {
+  color: var(--texto);
+}
+.metodo-pago select {
+  width: 70%;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 14px;
+  text-align: center;
+}

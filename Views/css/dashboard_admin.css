@@ -1,0 +1,597 @@
+/* === ESTRUCTURA Y RESET BÁSICO === */
+:root {
+  --color-primario: #1d4ed8;
+  --color-primario-claro: #dbeafe;
+  --color-fondo: #f9fafb;
+  --color-tarjeta: #ffffff;
+  --color-texto: #111827;
+  --color-texto-secundario: #6b7280;
+  --color-borde: #e5e7eb;
+  --color-exito: #059669;
+  --color-exito-fondo: #d1fae5;
+  --color-alerta: #d97706;
+  --color-alerta-fondo: #fef3c7;
+  --color-error: #ef4444;
+  --color-error-fondo: #fecaca;
+  --fuente-principal: 'Inter', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--fuente-principal);
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  display: flex;
+  min-height: 100vh;
+}
+
+.contenedor {
+  display: flex;
+  width: 100%;
+}
+
+/* === BARRA LATERAL === */
+.barra-lateral {
+  width: 260px;
+  background: var(--color-tarjeta);
+  border-right: 1px solid var(--color-borde);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+}
+
+.logo-contenedor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  padding: 0 12px;
+}
+
+.logo-imagen {
+  width: 40px;
+  height: 40px;
+}
+
+.logo-texto {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--color-primario);
+  line-height: 1.2;
+}
+
+.navegacion-principal a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  color: var(--color-texto-secundario);
+  text-decoration: none;
+  transition: all 0.2s;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.navegacion-principal a:hover {
+  background: #f3f4f6;
+  color: #000;
+}
+
+.navegacion-principal a.activo {
+  background: var(--color-primario-claro);
+  color: var(--color-primario);
+  font-weight: 600;
+}
+
+.navegacion-secundaria {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-borde);
+}
+
+.navegacion-secundaria a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: var(--color-texto-secundario);
+  text-decoration: none;
+  transition: all 0.2s;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.navegacion-secundaria a.enlace-logout:hover {
+  background: var(--color-error-fondo);
+  color: var(--color-error);
+}
+
+/* === CONTENIDO PRINCIPAL === */
+.contenido-principal {
+  flex: 1;
+  padding: 24px 32px;
+  background: var(--color-fondo);
+  overflow-y: auto;
+}
+
+.cabecera-principal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.cabecera-principal h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.info-usuario {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-primario);
+}
+
+.nombre-usuario {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.rol-usuario {
+  font-size: 0.8rem;
+  color: var(--color-texto-secundario);
+}
+
+.contenido-pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* --- Estadísticas --- */
+.estadisticas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.tarjeta-stat {
+  background: var(--color-tarjeta);
+  padding: 20px;
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  border: 1px solid var(--color-borde);
+}
+
+.tarjeta-stat .icono-stat {
+  width: 24px;
+  height: 24px;
+  color: var(--color-primario);
+  margin-bottom: 8px;
+}
+
+.tarjeta-stat h3 {
+  font-size: 0.9rem;
+  color: var(--color-texto-secundario);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.tarjeta-stat .valor {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-texto);
+}
+
+.tarjeta-stat .info-extra {
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.info-extra.positivo { color: var(--color-exito); }
+.info-extra.negativo { color: var(--color-error); }
+.info-extra.pendiente { color: var(--color-alerta); }
+
+
+/* --- Layout de Columnas --- */
+.layout-columnas {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  align-items: flex-start;
+}
+.columna-izquierda { flex: 2; }
+.columna-derecha { flex: 1; }
+
+/* --- Tarjeta de Tabla (Citas, Productos) --- */
+.tarjeta-tabla {
+  background: var(--color-tarjeta);
+  border-radius: var(--radio);
+  border: 1px solid var(--color-borde);
+  overflow: hidden;
+  box-shadow: var(--sombra);
+}
+
+.tarjeta-cabecera {
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.tarjeta-cabecera h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.boton-nuevo, .boton-nuevo-secundario {
+  background: var(--color-primario);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.boton-nuevo:hover { background: #1a42a0; }
+
+.boton-nuevo-secundario {
+  background: var(--color-fondo);
+  color: var(--color-texto-secundario);
+  border: 1px solid var(--color-borde);
+}
+.boton-nuevo-secundario:hover { background: #f0f3f5; }
+
+
+.contenedor-tabla {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 16px 24px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-borde);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+th {
+  font-weight: 600;
+  color: var(--color-texto-secundario);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+tbody tr:hover {
+  background: #f9fafb;
+}
+
+.estado {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.estado.completado, .estado.confirmada { background: var(--color-exito-fondo); color: var(--color-exito); }
+.estado.pendiente { background: var(--color-alerta-fondo); color: var(--color-alerta); }
+.estado.cancelado, .estado.agotado { background: var(--color-error-fondo); color: var(--color-error); }
+
+.acciones {
+  display: flex;
+  gap: 8px;
+}
+.boton-accion {
+  background: none;
+  border: 1px solid var(--color-borde);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+.boton-accion.editar {
+  color: var(--color-primario);
+  border-color: var(--color-primario-claro);
+}
+.boton-accion.editar:hover { background-color: var(--color-primario-claro); }
+
+.boton-accion.eliminar {
+  color: var(--color-error);
+  border-color: var(--color-error-fondo);
+}
+.boton-accion.eliminar:hover { background-color: var(--color-error-fondo); }
+
+
+/* --- Lista Simple (Stock) --- */
+.lista-simple {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.item-lista {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--color-borde);
+  font-size: 0.9rem;
+}
+.item-lista:last-child {
+  border-bottom: none;
+}
+.item-lista .stock-valor {
+  font-weight: 600;
+}
+
+/* --- Formulario de Venta Rápida --- */
+.formulario-venta-rapida {
+  padding: 16px 24px;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.campo-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+.campo-grupo label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-texto-secundario);
+}
+.campo-grupo select,
+.campo-grupo input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: white;
+  font-size: 0.9rem;
+  min-width: 200px;
+}
+.formulario-venta-rapida .boton-nuevo {
+  height: 42px; /* Alinear con los inputs */
+}
+
+/* --- Formulario CRUD (Añadir/Editar Producto) --- */
+.formulario-crud {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.grupo-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.grupo-formulario label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.grupo-formulario input[type="text"],
+.grupo-formulario input[type="number"],
+.grupo-formulario input[type="file"],
+.grupo-formulario textarea,
+.grupo-formulario select,
+.grupo-formulario input[type="email"], /* Añadido */
+.grupo-formulario input[type="password"] { /* Añadido */
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.grupo-formulario input:focus,
+.grupo-formulario textarea:focus,
+.grupo-formulario select:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px var(--color-primario-claro);
+}
+
+.grupo-formulario-doble {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.info-imagen-actual {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--color-texto-secundario);
+}
+
+.info-imagen-actual img {
+  border-radius: 6px;
+  border: 1px solid var(--color-borde);
+}
+
+.acciones-formulario {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+  border-top: 1px solid var(--color-borde);
+  padding-top: 20px;
+}
+
+.boton-accion.cancelar {
+  background-color: #e5e7eb;
+  color: var(--color-texto);
+  padding: 10px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.boton-accion.cancelar:hover {
+  background-color: #d1d5db;
+}
+
+/* --- Alertas --- */
+.alerta {
+  padding: 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  border: 1px solid;
+  margin-bottom: 20px; /* Añadido para que no esté pegado */
+}
+.alerta.exito {
+  /* Estas clases no se usan en el PHP, pero las dejamos por si acaso */
+  background-color: var(--color-exito-fondo);
+  color: var(--color-exito);
+  border-color: var(--color-exito);
+}
+.alerta.error {
+  /* Estas clases no se usan en el PHP, pero las dejamos por si acaso */
+  background-color: var(--color-error-fondo);
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+/* CLASES DE ALERTA USADAS POR EL CONTROLADOR/VISTA */
+.alerta-exito {
+    background-color: #d4edda; /* Fondo verde claro, usando valores hex */
+    color: #155724; /* Texto verde oscuro */
+    border: 1px solid #c3e6cb;
+}
+
+.alerta-error {
+    background-color: #f8d7da; /* Fondo rojo claro, usando valores hex */
+    color: #721c24; /* Texto rojo oscuro */
+    border: 1px solid #f5c6cb;
+}
+
+/* --- Tabla de Productos Específicos --- */
+.imagen-tabla {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+td.descripcion-corta {
+  white-space: normal;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* --- Responsive Admin --- */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+  .barra-lateral {
+    width: 100%;
+    height: auto;
+    position: static;
+    flex-direction: row;
+    justify-content: space-between;
+    overflow-x: auto; /* Permite scroll horizontal en el nav si no cabe */
+  }
+  .logo-contenedor { margin-bottom: 0; }
+  .logo-texto { display: none; } /* Oculta texto en móvil */
+  .navegacion-principal { 
+    display: flex; 
+    flex-direction: row; 
+    gap: 0; /* Reducir espacio entre iconos */
+  }
+  .navegacion-principal a { 
+    font-size: 0.8rem; 
+    padding: 8px; 
+  }
+  .navegacion-principal a span { 
+    display: none; /* Oculta texto de enlaces */
+  }
+  .navegacion-secundaria { 
+    display: none; /* Oculta config/logout en menú principal móvil */
+  }
+
+  .contenido-principal { padding: 16px; }
+  .cabecera-principal { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .info-usuario { align-self: flex-end; }
+  .estadisticas { grid-template-columns: 1fr 1fr; }
+  .layout-columnas { grid-template-columns: 1fr; }
+  .formulario-venta-rapida { flex-direction: column; align-items: stretch; }
+  .grupo-formulario-doble { grid-template-columns: 1fr; }
+}
+/* --- ESTILOS ESPECÍFICOS PARA EL FORMULARIO DE REGISTRO/EDICIÓN DE MASCOTA --- */
+
+/* Ajuste para el grupo de radio buttons para mejor espaciado */
+.radio-group-custom {
+    display: flex;
+    gap: 20px; /* Espacio entre opciones de radio */
+    align-items: center;
+    padding-top: 5px; /* Pequeño ajuste visual */
+}
+
+.radio-group-custom input[type="radio"] {
+    /* Ocultar el radio nativo si usas estilos personalizados */
+    /* Apariencia de radio nativo, pero con un poco de margen */
+    margin-right: 5px; 
+}
+
+.radio-group-custom label {
+    font-weight: 500; /* Igual que el resto del texto secundario */
+    color: var(--color-texto-secundario);
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* Ajuste para el botón final para que ocupe todo el ancho */
+.acciones-formulario .boton-nuevo {
+    width: 100%;
+}

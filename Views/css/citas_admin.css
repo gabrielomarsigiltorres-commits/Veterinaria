@@ -1,0 +1,434 @@
+/*
+Estilos para configurar la apariencia de los íconos de Google Material Symbols.
+*/
+
+.material-symbols-outlined {
+    font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ============================================
+   RESET Y ESTILOS BASE
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    line-height: 1.6;
+    overflow: hidden;
+}
+
+/* ============================================
+   LAYOUT PRINCIPAL
+   ============================================ */
+
+.relative.flex.min-h-screen {
+    height: 100vh;
+}
+
+/* ============================================
+   SIDEBAR
+   ============================================ */
+
+aside {
+    border-right: 1px solid #e5e7eb;
+}
+
+aside nav ul {
+    list-style: none;
+}
+
+aside nav li a {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+aside nav li a:hover {
+    transform: translateX(4px);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+header {
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+}
+
+header button {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+header button:hover {
+    color: #005A9C !important;
+}
+
+/* ============================================
+   MAIN CONTENT
+   ============================================ */
+
+main {
+    overflow-y: auto;
+    background-color: #F4F6F8;
+}
+
+main::-webkit-scrollbar {
+    width: 8px;
+}
+
+main::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+main::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+main::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* ============================================
+   TARJETAS Y CONTENEDORES
+   ============================================ */
+
+.bg-white {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+}
+
+.rounded-xl {
+    border-radius: 0.75rem;
+}
+
+.shadow {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+
+button {
+    font-family: 'Manrope', sans-serif;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+button:focus {
+    outline: 2px solid #005A9C;
+    outline-offset: 2px;
+}
+
+.bg-primary {
+    background-color: #005A9C;
+    color: white;
+}
+
+.bg-primary:hover {
+    background-color: #004080;
+    box-shadow: 0 4px 12px rgba(0, 90, 156, 0.3);
+}
+
+.bg-red-600:hover {
+    background-color: #b91c1c;
+}
+
+/* ============================================
+   FORMULARIOS
+   ============================================ */
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+    font-family: 'Manrope', sans-serif;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #005A9C;
+    box-shadow: 0 0 0 3px rgba(0, 90, 156, 0.1);
+    outline: none;
+}
+
+textarea {
+    resize: vertical;
+}
+
+label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+/* ============================================
+   MODAL
+   ============================================ */
+
+#crud-modal {
+    animation: fadeIn 0.3s ease;
+}
+
+#crud-modal-content {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+#crud-modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+#crud-modal-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   CALENDARIO
+   ============================================ */
+
+#main-calendar-grid {
+    min-height: 400px;
+}
+
+.calendar-day {
+    min-height: 80px;
+    transition: all 0.2s ease;
+}
+
+.calendar-day:hover {
+    background-color: #f3f4f6;
+    cursor: pointer;
+}
+
+/* ============================================
+   ESTADOS DE CITAS
+   ============================================ */
+
+.bg-blue-50 {
+    background-color: #eff6ff;
+    border-left: 4px solid #3b82f6;
+}
+
+.bg-green-50 {
+    background-color: #f0fdf4;
+    border-left: 4px solid #10b981;
+}
+
+.bg-yellow-50 {
+    background-color: #fefce8;
+    border-left: 4px solid #f59e0b;
+}
+
+.bg-red-50 {
+    background-color: #fef2f2;
+    border-left: 4px solid #ef4444;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1024px) {
+    aside {
+        position: fixed;
+        left: -16rem;
+        height: 100vh;
+        transition: left 0.3s ease;
+        z-index: 50;
+    }
+    
+    aside.active {
+        left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    main {
+        padding: 1rem;
+    }
+    
+    .flex.flex-col.lg\:flex-row {
+        flex-direction: column;
+    }
+    
+    .lg\:w-2\/3,
+    .lg\:w-1\/3 {
+        width: 100% !important;
+    }
+    
+    #main-calendar-grid {
+        font-size: 0.7rem;
+    }
+    
+    .flex.items-center.justify-center.gap-2 {
+        flex-wrap: wrap;
+        gap: 0.5rem !important;
+    }
+}
+
+@media (max-width: 640px) {
+    aside {
+        width: 100%;
+        left: -100%;
+    }
+    
+    header {
+        padding: 1rem !important;
+    }
+    
+    .flex.flex-wrap.justify-end.gap-2 {
+        flex-direction: column;
+    }
+    
+    .flex.flex-wrap.justify-end.gap-2 > button {
+        width: 100%;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="date"],
+    input[type="time"],
+    select,
+    textarea {
+        width: 100% !important;
+    }
+    
+    .grid.grid-cols-1 {
+        gap: 1rem;
+    }
+}
+
+/* ============================================
+   DARK MODE
+   ============================================ */
+
+.dark aside {
+    border-right-color: #1f2937;
+}
+
+.dark header {
+    border-bottom-color: #1f2937;
+}
+
+.dark .bg-white {
+    background-color: #1f2937;
+    border-color: #374151;
+}
+
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="password"],
+.dark input[type="date"],
+.dark input[type="time"],
+.dark select,
+.dark textarea {
+    background-color: #111827;
+    border-color: #374151;
+    color: #f3f4f6;
+}
+
+.dark input::placeholder {
+    color: #9ca3af;
+}
+
+.dark label {
+    color: #d1d5db;
+}
+
+/* ============================================
+   UTILIDADES
+   ============================================ */
+
+.transition-all {
+    transition: all 0.3s ease;
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slideDown {
+    animation: slideDown 0.3s ease;
+}
