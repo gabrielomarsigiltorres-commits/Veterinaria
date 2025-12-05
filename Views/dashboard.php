@@ -2,7 +2,7 @@
 // 1. 🏁 Iniciar sesión
 session_start();
 
-// 2. 🛡️ Seguridad de la página
+// 2. 🛡 Seguridad de la página
 if (!isset($_SESSION['logueado']) || $_SESSION['tipo_usuario'] != 'cliente') {
     header("Location: login.php");
     exit;
@@ -12,7 +12,7 @@ if (!isset($_SESSION['logueado']) || $_SESSION['tipo_usuario'] != 'cliente') {
 $nombre_usuario = $_SESSION['usuario_nombre'];
 $id_usuario_logueado = $_SESSION['usuario_id'];
 
-// 4. 🗄️ Incluimos la conexión a la BD (PDO)
+// 4. 🗄 Incluimos la conexión a la BD (PDO)
 require '../Modelo/conexion.php';
 
 // 5. 🐶 Consultamos las mascotas del usuario logueado (con PDO)
@@ -97,8 +97,8 @@ $mascotas = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <h1>Clínica Veterinaria del Norte S.A.C</h1>
             <nav class="nav-principal">
                 <ul>
-                    <li><a href="#">Mascotas</a></li>
-                    <li><a href="#">Citas</a></li>
+                 <li><a href="dashboard.php"> Menú principal</a></li>
+                    <li><a href="reserva.php">Calendaria servicios</a></li>
                     <li><a href="tienda.php">Tienda</a></li>
                     <li><a href="contacto.php">Contacto</a></li>
                 </ul>
@@ -144,7 +144,7 @@ $mascotas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 <!-- Tarjeta para añadir nueva mascota -->
                 <div class="anadir-companero">
-                    <a href="registrar_mascota.php" class="btn-anadir" style="text-decoration: none; color: var(--primary); font-weight: 600; font-size: 15px; text-align: center;">+ Añadir Nueva Mascota</a>
+                   <a href="registrar_mascota_cliente.php" class="btn-anadir" style="text-decoration: none; color: var(--primary); font-weight: 600; font-size: 15px; text-align: center;">+ Añadir Nueva Mascota</a>
                 </div>
             </div>
         </section>
@@ -254,3 +254,5 @@ $mascotas = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </footer>
 </body>
 </html>
+
+//cambiar el dashboard

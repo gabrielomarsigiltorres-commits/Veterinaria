@@ -1,46 +1,36 @@
 <?php
 session_start();
-// Seguridad: Verificar si el usuario es administrador
 if (!isset($_SESSION['logueado']) || $_SESSION['tipo_usuario'] != 'administrador') {
     header("Location: login.php");
     exit;
 }
 
-// Conexión con PDO
-require '../Modelo/conexion.php'; // Debe devolver un objeto $conexion de tipo PDO
+require '../Modelo/conexion.php'; 
 
-// --- Carga de Estadísticas ---
 $hoy = date('Y-m-d');
 
 try {
-    // Citas de hoy
+    // Estadísticas Generales
     $stmt_citas_hoy = $conexion->prepare("SELECT COUNT(*) FROM citas WHERE fecha_cita = ?");
     $stmt_citas_hoy->execute([$hoy]);
     $citas_hoy = $stmt_citas_hoy->fetchColumn();
 
-    // Total Clientes
     $stmt_clientes = $conexion->prepare("SELECT COUNT(*) FROM usuarios WHERE tipo_usuario = 'cliente'");
     $stmt_clientes->execute();
     $clientes_total = $stmt_clientes->fetchColumn();
 
-    // Total Mascotas
     $stmt_mascotas_total = $conexion->prepare("SELECT COUNT(*) FROM mascotas_cliente");
     $stmt_mascotas_total->execute();
     $mascotas_total = $stmt_mascotas_total->fetchColumn();
 
-    // Productos con stock bajo (<= 10)
-    $stmt_stock = $conexion->prepare("
-        SELECT p.id_producto, p.nombre, p.stock 
-        FROM productos p
-        WHERE p.stock <= 10 
-        ORDER BY p.stock ASC 
-        LIMIT 5
-    ");
+    $stmt_stock = $conexion->prepare("SELECT p.id_producto, p.nombre, p.stock FROM productos p WHERE p.stock <= 10 ORDER BY p.stock ASC LIMIT 5");
     $stmt_stock->execute();
     $productos_bajos = $stmt_stock->fetchAll(PDO::FETCH_ASSOC);
     $productos_stock_bajo_count = count($productos_bajos);
 
-    // Próximas citas
+    // --- LÓGICA DE PRÓXIMAS CITAS (Filtrada) ---
+    // Filtramos para que solo muestre las que NO han sido atendidas ni canceladas.
+    // Como en tu sistema 'Confirmada' equivale a 'Atendida', la excluimos también para que desaparezca al darle al check verde.
     $stmt_citas_lista = $conexion->prepare("
         SELECT c.id, c.fecha_cita, c.hora_cita, c.servicio, c.estado, 
                m.nombre AS mascota, u.nombres_completos AS dueno 
@@ -48,6 +38,7 @@ try {
         JOIN mascotas_cliente m ON c.id_mascota = m.id
         JOIN usuarios u ON c.id_usuario = u.id
         WHERE c.fecha_cita >= CURDATE()
+        AND c.estado NOT IN ('Cancelada', 'Atendida', 'Confirmada', 'Completada')
         ORDER BY c.fecha_cita ASC, c.hora_cita ASC
         LIMIT 5
     ");
@@ -112,15 +103,12 @@ try {
         </div>
 
         <div class="layout-columnas">
-          <!-- Columna Izquierda: Próximas Citas -->
+          
           <div class="columna-izquierda">
             <div class="tarjeta-tabla">
               <div class="tarjeta-cabecera">
-                <h2>Próximas Citas</h2>
-                <a href="reserva.php" class="boton-nuevo">
-                  <i data-lucide="plus"></i> Nueva Cita
-                </a>
-              </div>
+                <h2>Próximas Citas Pendientes</h2>
+                </div>
               <div class="contenedor-tabla">
                 <table>
                   <thead>
@@ -134,18 +122,21 @@ try {
                   </thead>
                   <tbody>
                     <?php if (empty($citas)): ?>
-                      <tr><td colspan="5">No hay citas programadas.</td></tr>
+                      <tr>
+                          <td colspan="5" style="text-align: center; color: #888; padding: 20px;">
+                              <i data-lucide="check-circle" style="width: 30px; margin-bottom: 5px; display:block; margin: 0 auto;"></i>
+                              ¡Todo al día! No hay citas pendientes próximas.
+                          </td>
+                      </tr>
                     <?php else: ?>
                       <?php foreach ($citas as $c): ?>
                       <tr>
                         <td><strong><?= htmlspecialchars($c['mascota']) ?></strong></td>
                         <td><?= htmlspecialchars($c['dueno']) ?></td>
-                        <td><?= date('d/m/y', strtotime($c['fecha_cita'])) ?> <?= date('h:i A', strtotime($c['hora_cita'])) ?></td>
+                        <td><?= date('d/m/y', strtotime($c['fecha_cita'])) ?> <br> <span style="font-size:0.9em; color:#00A79D; font-weight:bold;"><?= date('h:i A', strtotime($c['hora_cita'])) ?></span></td>
                         <td><?= htmlspecialchars($c['servicio']) ?></td>
                         <td>
-                          <span class="estado <?= strtolower(htmlspecialchars($c['estado'])); ?>">
-                            <?= htmlspecialchars($c['estado']) ?>
-                          </span>
+                          <span class="estado pendiente">Pendiente</span>
                         </td>
                       </tr>
                       <?php endforeach; ?>
@@ -156,17 +147,16 @@ try {
             </div>
           </div>
 
-          <!-- Columna Derecha: Alertas de Stock -->
           <div class="columna-derecha">
             <div class="tarjeta-tabla">
               <div class="tarjeta-cabecera">
                 <h2>Alertas de Stock Bajo</h2>
-                <a href="admin_productos.php" class="boton-nuevo-secundario">Gestionar Productos</a>
+                <a href="admin_productos.php" class="boton-nuevo-secundario" style="font-size: 0.8rem; padding: 5px 10px;">Gestionar</a>
               </div>
               <ul class="lista-simple">
                 <?php if (empty($productos_bajos)): ?>
                   <li class="item-lista">
-                    <span>¡Excelente! No hay productos con bajo stock.</span>
+                    <span style="color: green;">¡Excelente! Inventario saludable.</span>
                   </li>
                 <?php else: ?>
                   <?php foreach ($productos_bajos as $p): ?>

@@ -17,15 +17,28 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (\PDOException $e) {
-     // En un entorno de producción, puedes redirigir a una página de error
      die("Error de conexión a la Base de Datos: " . $e->getMessage()); 
 }
 
 
 // ======================================================================
-// 2. LÓGICA DE PROCESAMIENTO DEL FORMULARIO (POST: CREAR/EDITAR)
+// 2. LÓGICA DE PROCESAMIENTO (POST: CREAR, EDITAR Y ELIMINAR)
 // ======================================================================
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    
+    // --- LÓGICA PARA ELIMINAR ---
+    if (isset($_POST['action']) && $_POST['action'] === 'delete') {
+        $idToDelete = $_POST['id'] ?? null;
+        if ($idToDelete && is_numeric($idToDelete)) {
+            $stmt = $pdo->prepare("DELETE FROM anuncios WHERE id = ?");
+            $stmt->execute([$idToDelete]);
+        }
+        // Redirigir para refrescar la lista
+        header('Location: anuncios_admin.php');
+        exit;
+    }
+
+    // --- LÓGICA PARA GUARDAR (CREAR O EDITAR) ---
     $id = $_POST['id'] ?? null;
     $titulo = trim($_POST['titulo'] ?? '');
     $contenido = trim($_POST['contenido'] ?? '');
@@ -46,8 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->execute([$titulo, $contenido, $prioridad, $estado, $id]);
         } else {
             // CREACIÓN (INSERT)
-            // Se asume que 'vistas' se inicializa a 0 y 'fecha_creacion' se establece automáticamente.
-            // Si no tienes 'fecha_creacion', quita la referencia de la consulta.
             $stmt = $pdo->prepare("
                 INSERT INTO anuncios (titulo, contenido, prioridad, estado, vistas, fecha_creacion) 
                 VALUES (?, ?, ?, ?, 0, NOW())
@@ -56,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     
-    // Redirigir para limpiar el POST y cerrar el modal (PRG pattern)
+    // Redirigir para limpiar el POST y cerrar el modal
     header('Location: anuncios_admin.php');
     exit;
 }
@@ -65,36 +76,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 // ======================================================================
 // 3. LÓGICA DE LECTURA (GET), FILTROS Y PREPARACIÓN DEL MODAL
 // ======================================================================
-$paginaActual = basename($_SERVER['SCRIPT_NAME']);
 $paginaActual = 'anuncios_admin.php'; 
 
 $searchTerm = $_GET['search'] ?? '';
 $anuncioIdToEdit = $_GET['edit'] ?? null;
-$modalOpenClass = (isset($_GET['new']) || $anuncioIdToEdit) ? 'modal-open' : '';
+$modalOpenClass = ($anuncioIdToEdit) ? 'modal-open' : '';
 
 $anuncioEditado = null;
 $whereClause = '';
 $params = [];
 
-// Lógica de Búsqueda por Título
 if (!empty($searchTerm)) {
     $whereClause = ' WHERE titulo LIKE ?';
     $params[] = '%' . $searchTerm . '%';
 }
 
-// Obtener todos los anuncios (filtrados o no)
-// Usamos ORDER BY id DESC para mostrar los más nuevos primero
 $stmt = $pdo->prepare("SELECT * FROM anuncios" . $whereClause . " ORDER BY id DESC");
 $stmt->execute($params);
 $anunciosFiltrados = $stmt->fetchAll();
 
-// Obtener datos del anuncio a editar (si aplica)
 if ($anuncioIdToEdit && is_numeric($anuncioIdToEdit)) {
     $stmt = $pdo->prepare("SELECT * FROM anuncios WHERE id = ?");
     $stmt->execute([$anuncioIdToEdit]);
     $anuncioEditado = $stmt->fetch();
     
-    // Si no se encuentra el anuncio, forzar el cierre del modal
     if (!$anuncioEditado) {
         $modalOpenClass = '';
     }
@@ -147,6 +152,29 @@ if ($anuncioIdToEdit && is_numeric($anuncioIdToEdit)) {
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-backdrop.modal-open {
+            display: flex;
+        }
+        .modal-container {
+            background-color: white;
+            width: 100%;
+            max-width: 32rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .dark .modal-container {
+            background-color: #101d22;
+            border: 1px solid #374151;
+        }
     </style>
 </head>
 <body class="font-display bg-background-light dark:bg-background-dark text-[#333333] dark:text-gray-200">
@@ -159,10 +187,10 @@ if ($anuncioIdToEdit && is_numeric($anuncioIdToEdit)) {
 <p class="text-3xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">Gestión de Anuncios</p>
 <p class="text-base font-normal leading-normal text-gray-500 dark:text-gray-400">Crea, edita y gestiona las comunicaciones para los usuarios.</p>
 </div>
-<a href="?new=1" class="flex items-center justify-center gap-2 overflow-hidden rounded-lg h-11 px-5 bg-primary text-white text-sm font-bold leading-normal tracking-wide shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark">
+<button onclick="abrirModalCrear()" type="button" class="flex items-center justify-center gap-2 overflow-hidden rounded-lg h-11 px-5 bg-primary text-white text-sm font-bold leading-normal tracking-wide shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark cursor-pointer">
 <span class="material-symbols-outlined">add_circle</span>
 <span class="truncate">Crear Nuevo Anuncio</span>
-</a>
+</button>
 </div>
 <div class="grid grid-cols-1 gap-6 mt-8 sm:grid-cols-2 lg:grid-cols-3">
     <div class="flex flex-col gap-2 rounded-lg p-6 bg-white dark:bg-background-dark border border-[#E0E0E0] dark:border-gray-700">
@@ -226,7 +254,6 @@ if ($anuncioIdToEdit && is_numeric($anuncioIdToEdit)) {
                                     <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-white sm:pl-6"><?php echo htmlspecialchars($anuncio['titulo']); ?></td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm">
                                         <?php 
-                                            // Asignar clases de color según la prioridad
                                             $colorClass = match($anuncio['prioridad']) {
                                                 'Urgente' => 'bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-300',
                                                 'Importante' => 'bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-300',
@@ -238,8 +265,17 @@ if ($anuncioIdToEdit && is_numeric($anuncioIdToEdit)) {
                                     </td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300"><?php echo htmlspecialchars($anuncio['estado']); ?></td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300"><?php echo htmlspecialchars($anuncio['vistas']); ?></td>
+                                    
                                     <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                        <a class="text-primary hover:text-primary/80" href="?edit=<?php echo $anuncio['id']; ?>">Editar</a>
+                                        <div class="flex items-center justify-end gap-3">
+                                            <a class="text-primary hover:text-primary/80 font-bold" href="?edit=<?php echo $anuncio['id']; ?>">Editar</a>
+                                            
+                                            <form method="POST" action="anuncios_admin.php" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este anuncio? Esta acción no se puede deshacer.');" style="display:inline;">
+                                                <input type="hidden" name="action" value="delete">
+                                                <input type="hidden" name="id" value="<?php echo $anuncio['id']; ?>">
+                                                <button type="submit" class="text-red-600 hover:text-red-900 font-bold bg-transparent border-none cursor-pointer">Eliminar</button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -254,20 +290,19 @@ if ($anuncioIdToEdit && is_numeric($anuncioIdToEdit)) {
 </main>
 </div>
 
-
-<div class="modal-backdrop <?php echo $modalOpenClass; ?>">
+<div id="modalAnuncio" class="modal-backdrop <?php echo $modalOpenClass; ?>">
     <div class="modal-container">
         <div class="flex items-center justify-between p-4 border-b border-[#E0E0E0] dark:border-gray-700">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white">
+            <h3 id="modalTitulo" class="text-xl font-bold text-gray-900 dark:text-white">
                 <?php echo $anuncioEditado ? 'Editar Anuncio: ' . htmlspecialchars($anuncioEditado['titulo']) : 'Crear Nuevo Anuncio'; ?>
             </h3>
-            <a href="anuncios_admin.php" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+            <button type="button" onclick="cerrarModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                 <i data-lucide="x" class="lucide-icon size-6"></i>
-            </a>
+            </button>
         </div>
         
-        <form class="p-6" method="POST" action="anuncios_admin.php">
-            <input type="hidden" name="id" value="<?php echo htmlspecialchars($anuncioEditado['id'] ?? ''); ?>">
+        <form id="formAnuncio" class="p-6" method="POST" action="anuncios_admin.php">
+            <input type="hidden" id="anuncioId" name="id" value="<?php echo htmlspecialchars($anuncioEditado['id'] ?? ''); ?>">
             
             <div class="space-y-4">
                 <div>
@@ -303,16 +338,45 @@ if ($anuncioIdToEdit && is_numeric($anuncioIdToEdit)) {
             </div>
             
             <div class="flex justify-end gap-3 pt-6">
-                <a href="anuncios_admin.php" class="h-11 px-5 flex items-center justify-center rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-bold leading-normal text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                <button type="button" onclick="cerrarModal()" class="h-11 px-5 flex items-center justify-center rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-bold leading-normal text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                     Cancelar
-                </a>
+                </button>
                 <button type="submit" class="h-11 px-5 flex items-center justify-center rounded-lg bg-primary text-white text-sm font-bold leading-normal tracking-wide shadow-sm hover:bg-primary/90">
-                    <?php echo $anuncioEditado ? 'Guardar Cambios' : 'Crear Anuncio'; ?>
+                    Guardar Cambios
                 </button>
             </div>
         </form>
-        
     </div>
 </div>
+
+<script>
+    const modal = document.getElementById('modalAnuncio');
+    const form = document.getElementById('formAnuncio');
+    const modalTitle = document.getElementById('modalTitulo');
+    const inputId = document.getElementById('anuncioId');
+
+    function abrirModalCrear() {
+        form.reset(); 
+        inputId.value = ''; 
+        modalTitle.innerText = 'Crear Nuevo Anuncio'; 
+        modal.classList.add('modal-open'); 
+    }
+
+    function cerrarModal() {
+        modal.classList.remove('modal-open');
+        const url = new URL(window.location);
+        if (url.searchParams.has('edit')) {
+            url.searchParams.delete('edit');
+            window.history.pushState({}, '', url);
+        }
+    }
+
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            cerrarModal();
+        }
+    });
+</script>
+
 </body>
 </html>
