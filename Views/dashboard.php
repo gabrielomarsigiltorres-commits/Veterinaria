@@ -91,23 +91,33 @@ $mascotas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     <!-- Header -->
-    <header class="encabezado">
+   <header class="encabezado">
         <div class="contenedor-encabezado">
-            <img class="logo" src="../img/veterinarialogo.png" alt="Logo">
-            <h1>Clínica Veterinaria del Norte S.A.C</h1>
-            <nav class="nav-principal">
-                <ul>
-                 <li><a href="dashboard.php"> Menú principal</a></li>
-                    <li><a href="reserva.php">Calendaria servicios</a></li>
-                    <li><a href="tienda.php">Tienda</a></li>
-                    <li><a href="contacto.php">Contacto</a></li>
+            
+            <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
+                <img class="logo" src="../img/veterinarialogo.png" alt="Logo" style="width: 45px; height: 45px;">
+                <h1 style="font-size: 1.2rem; color: #18a0d6; margin: 0;">Clínica Veterinaria del Norte S.A.C</h1>
+            </div>
+            
+            <nav class="nav-principal" style="flex-grow: 1; display: flex; justify-content: center; margin: 0 20px;">
+                <ul style="display: flex; list-style: none; padding: 0; margin: 0; gap: 20px;">
+                    <li><a href="dashboard.php" style="text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s;">Menú principal</a></li>
+                    <li><a href="servicios.php" style="text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s;">Calendario servicios</a></li>
+                    <li><a href="tienda.php" style="text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s;">Tienda</a></li>
+                    <li><a href="contacto.php" style="text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s;">Contacto</a></li>
                 </ul>
             </nav>
-             <!-- 🔔 Perfil y Campana -->
-            <div class="perfil-usuario">
-                <a href="anuncio_cliente.php" class="campana" title="Ver anuncios importantes">🔔</a>
-                <span class="nombre-usuario">👤 <?php echo htmlspecialchars($nombre_usuario); ?></span>
-                <a href="../Controller/cerrar_sesion.php" class="cerrar-sesion">Cerrar Sesión</a>
+            
+            <div class="perfil-usuario" style="display: flex; align-items: center; gap: 15px; flex-shrink: 0;">
+                <a href="anuncio_cliente.php" class="campana" title="Ver anuncios importantes" style="text-decoration: none; font-size: 1.2rem;">🔔</a>
+                
+                <a href="perfil_cliente.php" title="Mi Perfil" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: inherit;">
+                    <img id="headerProfilePic" src="<?= $foto_perfil_url ?>" alt="Foto de Perfil" 
+                         style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #13b6ec;">
+                    <span class="nombre-usuario" style="color: #333; font-weight: 600;"><?= htmlspecialchars($nombre_usuario); ?></span>
+                </a>
+                
+                <a href="../Controller/cerrar_sesion.php" class="cerrar-sesion" style="text-decoration: none; color: #e44d4d; font-weight: 600;">Cerrar Sesión</a>
             </div>
         </div>
     </header>

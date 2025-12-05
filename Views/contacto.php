@@ -2,36 +2,7 @@
 // ------------------- CONEXIÓN A LA BASE DE DATOS -------------------
 require_once('../Modelo/conexion.php'); // Usa la conexión PDO centralizada
 
-// ------------------- GUARDAR DATOS DEL FORMULARIO -------------------
-$mensaje_exito = "";
-$mensaje_error = "";
-
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $nombre  = trim($_POST['full-name'] ?? '');
-    $correo  = trim($_POST['email'] ?? '');
-    $asunto  = trim($_POST['subject'] ?? '');
-    $mensaje = trim($_POST['message'] ?? '');
-
-    if (!empty($nombre) && !empty($correo) && !empty($asunto) && !empty($mensaje)) {
-        try {
-            $sql = "INSERT INTO mensajes_contacto (nombre_completo, correo_electronico, asunto, mensaje)
-                    VALUES (:nombre, :correo, :asunto, :mensaje)";
-            $stmt = $conexion->prepare($sql);
-            $stmt->execute([
-                ':nombre'  => $nombre,
-                ':correo'  => $correo,
-                ':asunto'  => $asunto,
-                ':mensaje' => $mensaje
-            ]);
-
-            $mensaje_exito = "✅ Tu mensaje se envió correctamente. ¡Gracias por contactarnos!";
-        } catch (PDOException $e) {
-            $mensaje_error = "❌ Error al enviar el mensaje: " . $e->getMessage();
-        }
-    } else {
-        $mensaje_error = "⚠️ Por favor, completa todos los campos antes de enviar.";
-    }
-}
+// (Se eliminó la lógica de recepción del formulario porque ya no existe)
 ?>
 
 <!DOCTYPE html>
@@ -49,29 +20,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="contenedor-principal">
         <div class="layout-contenedor">
 
-            <!-- CABECERA -->
-            <header class="cabecera-sitio">
-                <div class="contenedor-limitado">
-                    <div class="cabecera-contenido">
-                        <div class="logo-contenedor">
-                            <span class="logo-icono">🐾</span>
-                            <h2 class="logo-texto">Clínica Veterinaria del Norte</h2>
-                        </div>
-                        <nav class="navegacion-principal" aria-label="Navegación del Sitio">
-                            <a href="dashboard.php">Inicio</a>
-                            <a href="mascotas.php">Mascotas</a>
-                            <a href="citas.php">Citas</a>
-                            <a href="tienda.php">Tienda</a>
-                            <a href="contacto.php" aria-current="page">Contacto</a>
-                        </nav>
-                        <div class="cabecera-accion">
-                            <button class="boton-primario"><span>Agendar Cita</span></button>
-                        </div>
-                    </div>
-                </div>
-            </header>
+         <header class="encabezado">
+        <div class="contenedor-encabezado">
+            
+            <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
+                <img class="logo" src="../img/veterinarialogo.png" alt="Logo" style="width: 45px; height: 45px;">
+                <h1 style="font-size: 1.2rem; color: #18a0d6; margin: 0;">Clínica Veterinaria del Norte S.A.C</h1>
+            </div>
+            
+            <nav class="nav-principal" style="flex-grow: 1; display: flex; justify-content: center; margin: 0 20px;">
+                <ul style="display: flex; list-style: none; padding: 0; margin: 0; gap: 20px;">
+                    <li><a href="dashboard.php" style="text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s;">Menú principal</a></li>
+                    <li><a href="servicios.php" style="text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s;">Calendario servicios</a></li>
+                    <li><a href="tienda.php" style="text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s;">Tienda</a></li>
+                    <li><a href="contacto.php" style="text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s;">Contacto</a></li>
+                </ul>
+            </nav>
+            
+            <div class="perfil-usuario" style="display: flex; align-items: center; gap: 15px; flex-shrink: 0;">
+                <a href="anuncio_cliente.php" class="campana" title="Ver anuncios importantes" style="text-decoration: none; font-size: 1.2rem;">🔔</a>
+                
+                <a href="perfil_cliente.php" title="Mi Perfil" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: inherit;">
+                    <img id="headerProfilePic" src="<?= $foto_perfil_url ?>" alt="Foto de Perfil" 
+                         style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #13b6ec;">
+                    <span class="nombre-usuario" style="color: #333; font-weight: 600;"><?= htmlspecialchars($nombre_usuario); ?></span>
+                </a>
+                
+                <a href="../Controller/cerrar_sesion.php" class="cerrar-sesion" style="text-decoration: none; color: #e44d4d; font-weight: 600;">Cerrar Sesión</a>
+            </div>
+        </div>
+    </header>
 
-            <!-- CONTENIDO PRINCIPAL -->
             <main class="contenido-principal">
                 <div class="contenedor-contenido contenedor-limitado">
                     <div class="titulo-pagina">
@@ -79,22 +58,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <p class="subtitulo-pagina">Elige la opción que mejor se adapte a tu consulta. Estamos listos para atender a tu mascota.</p>
                     </div>
 
-                    <!-- Mensajes de respuesta -->
-                    <?php if ($mensaje_exito): ?>
-                        <div class="mensaje-exito"><?= htmlspecialchars($mensaje_exito); ?></div>
-                    <?php elseif ($mensaje_error): ?>
-                        <div class="mensaje-error"><?= htmlspecialchars($mensaje_error); ?></div>
-                    <?php endif; ?>
-
                     <div class="layout-contacto">
-                        <!-- COLUMNA IZQUIERDA -->
                         <div class="columna-informacion">
                             <div class="bloque-whatsapp">
                                 <h2 class="subtitulo-seccion">Consultas Rápidas y Urgencias</h2>
                                 <p class="descripcion-seccion">Este canal es ideal para preguntas sencillas o para notificar una llegada de emergencia.</p>
                                 <a class="boton-whatsapp" href="https://wa.me/51956369001?text=Hola, quiero una consulta" target="_blank" rel="noopener noreferrer">
                                     <svg class="icono-whatsapp" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M16.75 13.96c..." />
+                                        <path d="M16.75 13.96c.25.13.36.26.34.42-.04.28-.27.53-.55.72-.28.19-.65.29-1.07.29-.44 0-1.12-.11-2.09-.54-1.39-.62-2.29-1.57-2.69-2.11-.08-.11-.56-.76-.56-1.44 0-.66.34-.98.46-1.12.1-.11.23-.19.36-.19.11 0 .22.01.32.02.13.01.27.02.37.28.11.26.38.94.41 1.01.04.09.06.2.02.29-.05.09-.08.14-.15.22-.09.09-.18.17-.26.27-.08.09-.17.18-.07.36.26.44 1.14 1.58 2.45 2.16.2.09.38.07.52-.07.11-.11.46-.54.59-.72.11-.16.29-.21.49-.13l1.55.73c.09.04.18.09.24.13zM12 2.18c5.42 0 9.82 4.4 9.82 9.82 0 1.73-.45 3.36-1.23 4.79l.81 2.95-3.03-.79C17.06 20.3 14.63 21 12 21c-5.42 0-9.82-4.4-9.82-9.82S6.58 2.18 12 2.18zM12 0C5.37 0 0 5.37 0 12c0 2.12.55 4.1 1.51 5.82L.09 23.36l5.71-1.49A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12S18.63 0 12 0z"/>
                                     </svg>
                                     <span>Chatea con nosotros en WhatsApp</span>
                                 </a>
@@ -123,40 +94,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             </div>
                         </div>
 
-                        <!-- COLUMNA DERECHA: FORMULARIO -->
-                        <div class="columna-formulario">
-                            <h2 class="subtitulo-seccion">Para Consultas Detalladas o Solicitudes</h2>
-                            <p class="descripcion-seccion">Usa este formulario para agendar citas, solicitar información específica o enviar comentarios.</p>
-
-                            <form action="contacto.php" method="POST" class="formulario-contacto">
-                                <div class="campo-formulario">
-                                    <label for="full-name">Nombre Completo</label>
-                                    <input id="full-name" name="full-name" placeholder="Tu nombre y apellido" type="text" required />
-                                </div>
-                                <div class="campo-formulario">
-                                    <label for="email">Correo Electrónico</label>
-                                    <input id="email" name="email" placeholder="tu@email.com" type="email" required />
-                                </div>
-                                <div class="campo-formulario">
-                                    <label for="subject">Asunto</label>
-                                    <input id="subject" name="subject" placeholder="Ej: Consulta sobre vacunación" type="text" required />
-                                </div>
-                                <div class="campo-formulario">
-                                    <label for="message">Mensaje</label>
-                                    <textarea id="message" name="message" placeholder="Escribe aquí tu consulta..." rows="5" required></textarea>
-                                </div>
-                                <div>
-                                    <button class="boton-primario" type="submit">
-                                        <span>Enviar Mensaje</span>
-                                    </button>
-                                </div>
-                            </form>
                         </div>
-                    </div>
                 </div>
             </main>
 
-            <!-- PIE DE PÁGINA -->
             <footer class="pie-de-pagina">
                 <div class="contenedor-limitado">
                     <div class="pie-de-pagina-contenido">

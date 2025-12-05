@@ -139,29 +139,36 @@ $nombre_cliente = $_SESSION['usuario_nombre'] ?? '';
     <div class="contenedor-principal">
 
         <!-- HEADER -->
-        <header class="cabecera-sitio">
-            <div class="contenedor-limitado">
-                <div class="cabecera-contenido">
-                    <a href="../INICIO.PHP" class="logo-contenedor">
-                         <img src="../img/veterinarialogo.png" alt="Logo" style="width: 50px;">
-                        <h2 class="logo-texto">Clínica Veterinaria del Norte</h2>
-                    </a>
-                    <nav class="navegacion-principal">
-                        <a href="dashboard.php">Mi Cuenta</a>
-                        <a href="reserva.php">Citas</a>
-                        <a href="tienda.php" class="enlace-activo">Tienda</a>
-                        <a href="contacto.php">Contacto</a>
-                    </nav>
-                    <div class="usuario-acciones">
-                         <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
-                            <a href="../Controller/cerrar_sesion.php" class="boton-salir">Salir</a>
-                        <?php else: ?>
-                            <a href="login.php" class="boton-acceso">Ingresar</a>
-                        <?php endif; ?>
-                    </div>
-                </div>
+       <header class="encabezado">
+        <div class="contenedor-encabezado">
+            
+            <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
+                <img class="logo" src="../img/veterinarialogo.png" alt="Logo" style="width: 45px; height: 45px;">
+                <h1 style="font-size: 1.2rem; color: #18a0d6; margin: 0;">Clínica Veterinaria del Norte S.A.C</h1>
             </div>
-        </header>
+            
+            <nav class="nav-principal" style="flex-grow: 1; display: flex; justify-content: center; margin: 0 20px;">
+                <ul style="display: flex; list-style: none; padding: 0; margin: 0; gap: 20px;">
+                    <li><a href="dashboard.php" style="text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s;">Menú principal</a></li>
+                    <li><a href="servicios.php" style="text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s;">Calendario servicios</a></li>
+                    <li><a href="tienda.php" style="text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s;">Tienda</a></li>
+                    <li><a href="contacto.php" style="text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s;">Contacto</a></li>
+                </ul>
+            </nav>
+            
+            <div class="perfil-usuario" style="display: flex; align-items: center; gap: 15px; flex-shrink: 0;">
+                <a href="anuncio_cliente.php" class="campana" title="Ver anuncios importantes" style="text-decoration: none; font-size: 1.2rem;">🔔</a>
+                
+                <a href="perfil_cliente.php" title="Mi Perfil" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: inherit;">
+                    <img id="headerProfilePic" src="<?= $foto_perfil_url ?>" alt="Foto de Perfil" 
+                         style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #13b6ec;">
+                    <span class="nombre-usuario" style="color: #333; font-weight: 600;"><?= htmlspecialchars($nombre_usuario); ?></span>
+                </a>
+                
+                <a href="../Controller/cerrar_sesion.php" class="cerrar-sesion" style="text-decoration: none; color: #e44d4d; font-weight: 600;">Cerrar Sesión</a>
+            </div>
+        </div>
+    </header>
 
         <!-- MAIN -->
         <main class="contenedor-limitado">
